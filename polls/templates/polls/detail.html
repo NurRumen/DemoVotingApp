@@ -1,0 +1,41 @@
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- Bootstrap core CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
+<!-- Material Design Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.9/css/mdb.min.css" rel="stylesheet">
+
+<!--Jumbotron-->
+<div style="text-align:center" class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="h1-reponsive mb-4 mt-2 blue-text font-bold">Hi All Voters</h1>
+        <p class="lead">Please Cast your Votes</p>
+    </div>
+
+</div>
+<!--Jumbotron-->
+
+<!-- Group of default radios - option 1 -->
+<div style="text-align:center" class="custom-control custom-radio">
+  <h5 class="h1-reponsive mb-4 mt-2 blue-text font-bold">{{ question.question_text }}</h5>
+  {% if error_message %}
+      <p class="lead">{{ error_message }}</p>
+  {% endif %}
+<form action="{% url 'polls:vote' question.id %}" method="post">
+  {% csrf_token %}
+  {% for choice in question.choice_set.all %}
+  <input type="radio" class="custom-control-input" id="choice{{ forloop.counter }}" name="choice" value="{{ choice.id }}">
+  <label class="custom-control-label" for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+  {% endfor %}
+<button type="submit" class="btn btn-primary" value="Vote">Submit</button>
+</form>
+</div>
+
+<!-- JQuery -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.13.0/umd/popper.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.9/js/mdb.min.js"></script>
