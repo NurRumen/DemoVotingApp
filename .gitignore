@@ -106,3 +106,4 @@ dmypy.json
 # Custom
 .idea/
 venv/
+.env
