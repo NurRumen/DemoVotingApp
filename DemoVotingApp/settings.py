@@ -11,8 +11,17 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import environ
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
+
+# Django Environment Setup
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+# Read .env file
+environ.Env.read_env()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -22,12 +31,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'qgg#5=8cf5u4-4ie5(g1i26no9c!gvanftx4k5u1b%ezrhtl%g'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env.tuple('ALLOWED_HOSTS')
 
 
 # Application definition
@@ -79,8 +88,11 @@ WSGI_APPLICATION = 'DemoVotingApp.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'HOST': env('DB_HOST'),
+        'PASSWORD': env('DB_PASSWORD'),
     }
 }
 
@@ -126,7 +138,7 @@ STATIC_URL = '/static/'
 
 # Sentry Settings
 sentry_sdk.init(
-    dsn="https://a2586521856e496b8caee6c5ce8acc03@o413397.ingest.sentry.io/5299905",
+    dsn=env('sentry_dsn'),
     integrations=[DjangoIntegration()],
 
     # If you wish to associate users to errors (assuming you are using
