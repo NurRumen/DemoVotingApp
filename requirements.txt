@@ -5,3 +5,4 @@ Faker
 coverage
 sentry-sdk
 django-environ
+psycopg2-binary
